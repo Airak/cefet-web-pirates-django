@@ -41,3 +41,9 @@ class SalvarTesouroView(View):
 			form.save()
 			return redirect('lista')
 		return render(request, template_name, context)
+
+class DeletarTesouroView(View):
+	def get(self, request, pk):
+		tesouro = Tesouro.objects.get(pk=pk)
+		tesouro.delete()
+		return redirect('lista')
