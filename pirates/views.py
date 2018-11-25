@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.db.models import F, ExpressionWrapper, DecimalField
 
 from .models import Tesouro
+from .forms import TesouroForm
 
 class ListaTesourosView(View):
 	def get(self, request):
@@ -19,4 +20,24 @@ class ListaTesourosView(View):
 			'total_geral': total_geral
 		}
 
+		return render(request, template_name, context)
+
+class SalvarTesouroView(View):
+	def get(self, request):
+		template_name = 'salvar_tesouro.html'
+		context = {
+			'form': TesouroForm(request.GET)
+		}	
+		return render(request, template_name, context)
+
+	def post(self,request):
+		template_name = 'salvar_tesouro.html'
+		form = TesouroForm(request.POST, request.FILES)
+		context = {
+			'form': form,
+		}
+
+		if form.is_valid():
+			form.save()
+			return redirect('lista')
 		return render(request, template_name, context)
