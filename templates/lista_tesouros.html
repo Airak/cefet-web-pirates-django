@@ -24,7 +24,7 @@
             <td>{{tesouro.preco}}</td>
             <td>{{tesouro.quantidade}}</td>
             <td>{{tesouro.total}}</td>
-            <td><a href=""><img width="30px" src="{% static "imgs/edit.png"%}" alt="editar"></td></a>
+            <td><a href="{% url 'editar' tesouro.pk %}"><img width="30px" src="{% static "imgs/edit.png"%}" alt="editar"></td></a>
             <td><a href="{% url 'deletar' tesouro.pk %}"><img width="30px" src="{% static "imgs/delete.svg"%}" alt="Deletar"></td></a>
           </tr>
         {% endfor %}

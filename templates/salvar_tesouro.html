@@ -4,7 +4,7 @@
 {% block content %}
 
 	<h1>Salvar Tesouro </h1>
-	<form method="post" action="/inserir" enctype="multipart/form-data">
+	<form method="post" action="{{ action }}" enctype="multipart/form-data">
 		{% csrf_token %}
 			{{ form.as_table }}
 			<button type="submit">Salvar</button>
