@@ -1,28 +1,22 @@
 from django.shortcuts import render
 from django.views import View
+from django.db.models import F, ExpressionWrapper, DecimalField
 
 from .models import Tesouro
 
-
-class ListaTesourosView():
-
-	def get():
+class ListaTesourosView(View):
+	def get(self, request):
 		template_name = 'lista_tesouros.html'
-		context = []
 
-		context['lista_tesouros'] = Tesouro.objects.all()
-		valor_total = Tesouro.objects.annotate(total=ExpressionWrapper(F('valor')*F('quantidade'),\
-				output_field=DecimalField(max_digits=10,\
-										decimal_places=2,\
-										blank=True)\
-										)\
-		)
+		lista_tesouros = Tesouro.objects.annotate(total=ExpressionWrapper(F('preco')*F('quantidade'), output_field=DecimalField(max_digits=10, decimal_places=2,blank=True)))
 
 		total_geral = 0
-		for valor in valor_total:
-			total_geral = total_geral + valor
+		for tesouro in lista_tesouros:
+			total_geral = total_geral + tesouro.total
 
-		context['total_geral'] = total_geral
+		context = {
+			'lista_tesouros': lista_tesouros,
+			'total_geral': total_geral
+		}
 
-		return render(request, context, template_name)
-
+		return render(request, template_name, context)
